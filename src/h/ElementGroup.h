@@ -16,6 +16,7 @@
 #include "Bar.h"
 #include "Material.h"
 #include "Node.h"
+#include "T3.h"
 
 using namespace std;
 
