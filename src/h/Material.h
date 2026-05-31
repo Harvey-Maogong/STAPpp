@@ -21,20 +21,38 @@ class CMaterial
 public:
 
 	unsigned int nset;	//!< Number of set
-	
+
 	double E;  //!< Young's modulus
 
 public:
 
-//! Virtual deconstructor
-    virtual ~CMaterial() {};
+	//! Virtual deconstructor
+	virtual ~CMaterial() {};
 
-//!	Read material data from stream Input
+	//!	Read material data from stream Input
 	virtual bool Read(ifstream& Input) = 0;
 
-//!	Write material data to Stream
-    virtual void Write(COutputter& output) = 0;
+	//!	Write material data to Stream
+	virtual void Write(COutputter& output) = 0;
 
+};
+
+//!	Material class for 3-node triangular element (CST)
+class CT3Material : public CMaterial
+{
+public:
+
+	double nu;		//!< Poisson's ratio
+	double t;		//!< Thickness
+	int type;		//!< 1 = plane stress, 2 = plane strain
+
+public:
+
+	//!	Read material data from stream Input
+	virtual bool Read(ifstream& Input);
+
+	//!	Write material data to Stream
+	virtual void Write(COutputter& output);
 };
 
 //!	Material class for bar element
@@ -45,10 +63,10 @@ public:
 	double Area;	//!< Sectional area of a bar element
 
 public:
-	
-//!	Read material data from stream Input
+
+	//!	Read material data from stream Input
 	virtual bool Read(ifstream& Input);
 
-//!	Write material data to Stream
+	//!	Write material data to Stream
 	virtual void Write(COutputter& output);
 };

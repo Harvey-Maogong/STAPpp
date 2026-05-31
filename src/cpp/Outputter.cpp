@@ -161,6 +161,9 @@ void COutputter::OutputElementInfo()
 			case ElementTypes::Bar: // Bar element
 				OutputBarElements(EleGrp);
 				break;
+			case ElementTypes::T3:
+				OutputT3Elements(EleGrp);
+				break;
 		    default:
 		        *this << ElementType << " has not been implemented yet." << endl;
 		        break;
@@ -278,7 +281,7 @@ void COutputter::OutputElementStress()
 
 		switch (ElementType)
 		{
-			case ElementTypes::Bar: // Bar element
+			case ElementTypes::Bar:{// Bar element
 				*this << "  ELEMENT             FORCE            STRESS" << endl
 					<< "  NUMBER" << endl;
 
@@ -297,7 +300,25 @@ void COutputter::OutputElementStress()
 				*this << endl;
 
 				break;
+			}
+			case ElementTypes::T3:{
+				*this << "  ELEMENT        SX              SY              TXY" << endl
+					  << "  NUMBER" << endl;
 
+				double stress[3];
+
+				for (unsigned int Ele = 0; Ele < NUME; Ele++)
+				{
+					CElement& Element = EleGrp[Ele];
+					Element.ElementStress(stress, Displacement);
+
+					*this << setw(5) << Ele + 1 << setw(18) << stress[0] << setw(18) << stress[1] << setw(18) << stress[2] << endl;
+				}
+
+				*this << endl;
+
+				break;
+			}
 			default: // Invalid element type
 				cerr << "*** Error *** Elment type " << ElementType
 					<< " has not been implemented.\n\n";
@@ -323,6 +344,52 @@ void COutputter::OutputTotalSystemData()
 		  << endl
 		  << endl;
 }
+
+//	Output T3 element data
+void COutputter::OutputT3Elements(unsigned int EleGrp)
+{
+	CDomain* FEMData = CDomain::GetInstance();
+
+	CElementGroup& ElementGroup = FEMData->GetEleGrpList()[EleGrp];
+	unsigned int NUMMAT = ElementGroup.GetNUMMAT();
+
+	*this << " M A T E R I A L   D E F I N I T I O N" << endl
+		  << endl;
+	*this << " NUMBER OF DIFFERENT SETS OF MATERIAL" << endl;
+	*this << " AND CROSS-SECTIONAL  CONSTANTS  . . . .( NPAR(3) ) . . =" << setw(5) << NUMMAT
+		  << endl
+		  << endl;
+
+	*this << "  SET       YOUNG'S      POISSON'S      THICKNESS     TYPE" << endl
+		  << " NUMBER     MODULUS        RATIO" << endl
+		  << "               E             NU             T" << endl;
+
+	*this << setiosflags(ios::scientific) << setprecision(5);
+
+	for (unsigned int mset = 0; mset < NUMMAT; mset++)
+    {
+        *this << setw(5) << mset+1;
+		ElementGroup.GetMaterial(mset).Write(*this);
+    }
+
+	*this << endl << endl
+		  << " E L E M E N T   I N F O R M A T I O N" << endl;
+    
+	*this << " ELEMENT     NODE     NODE     NODE       MATERIAL" << endl
+		  << " NUMBER-N      I        J        K       SET NUMBER" << endl;
+
+	unsigned int NUME = ElementGroup.GetNUME();
+
+	for (unsigned int Ele = 0; Ele < NUME; Ele++)
+    {
+        *this << setw(5) << Ele+1;
+		ElementGroup[Ele].Write(*this);
+    }
+
+	*this << endl;
+}
+
+
 
 #ifdef _DEBUG_
 
