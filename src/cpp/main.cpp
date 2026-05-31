@@ -12,6 +12,7 @@
 #include "Bar.h"
 #include "Outputter.h"
 #include "Clock.h"
+#include "T3.h"
 
 using namespace std;
 
