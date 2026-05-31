@@ -1,4 +1,6 @@
-# stappp
+# STAPpp with T3 element
+
+###Introduction of Original STAPpp
 
 STAP++ is a C++ finite element method (FEM) code whose input/output data files are the same as STAP90. STAP90 is a FEM code in Fortran 90 provided by our textbook (Xiong Zhang, Tianshu Wang. Computational Dynamics, Tsinghau University Press, 2007; Xiong Zhang, Tianshu Wang, Yan Liu. Computational Dynamics (2nd edition), Tsinghau University Press, 2015)
 
@@ -9,3 +11,20 @@ STAP++ is a cross-platform FEM code, which can be build on Windows, Linux and ma
 STAP++ is developed and maintained by the Computational Dynamics Laboratory (http://www.comdyn.cn/), School of Aerospace Engineering, Tsinghua University, China. Your feedbacks are welcome.
 
 The documentation of STAP++ can be found at https://xzhang66.github.io/stappp/index.html.
+
+
+
+###New features with T3 element
+
+Three node triangular plane stress/strain element (T3/CST)
+
+Calculation Example of Convergence Rate Analysis of Cantilever Beam
+
+
+
+### Usage
+
+~~~bash
+```bash
+stap++ yourinput.dat
+~~~
