@@ -1,0 +1,30 @@
+# Build directories
+build/
+src/build/
+Debug/
+Release/
+x64/
+
+# IDE configs
+.vscode/
+.idea/
+
+# Compiled artifacts
+*.exe
+*.obj
+*.o
+*.out
+*.ilk
+*.pdb
+*.a
+
+# CMake generated
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# Others
+others/
+*.zip
